@@ -13,6 +13,7 @@ Material-UI is used for designing ui of the app
 */
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import RaisedButton from 'material-ui/RaisedButton';
+import Menu from './components/LeftMenu';
 
 var apiBaseUrl = "http://localhost:4000/api/";
 var request = require('superagent');
@@ -37,10 +38,8 @@ class UploadScreen extends Component {
     }
 
     render() {
-        // const element = <Welcome name="Sara" />;
-
         return (
-            <div style={BackGround}>
+            <div>
                 <div className="App">
                     <MuiThemeProvider>
                         <RaisedButton disabled={this.state.first_name} label="Log Out!!" primary={true}
@@ -48,6 +47,9 @@ class UploadScreen extends Component {
                     </MuiThemeProvider>
                     <div style={centralMessage}>
                         Welcome to the First Dashboard!
+                    </div>
+                    <div>
+                        <Menu/>
                     </div>
                     <div >
                     <Dashboard data={this.state.data} />
@@ -71,15 +73,5 @@ const centralMessage = {
     background: "YellowGreen",
     textAlign: "center"
 };
-
-const BackGround = {
-    backgroundColor: "gray",
-    backgroundSize: "cover",
-};
-
-const styleColumns = {
-    marginRight: "100px",
-};
-
 
 export default UploadScreen;

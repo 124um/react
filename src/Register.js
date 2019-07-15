@@ -49,7 +49,7 @@ class Register extends Component {
 
     render() {
         return (
-            <div>
+            <div  style={style}>
                 <MuiThemeProvider>
                     <div>
                         <AppBar

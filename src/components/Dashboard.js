@@ -3,34 +3,25 @@ import {BootstrapTable, TableHeaderColumn}
     from 'react-bootstrap-table';
 import '../css/Dashboard.css';
 import '../../node_modules/react-bootstrap-table/css/react-bootstrap-table.css';
+import '../../node_modules/react-bootstrap-table/dist/react-bootstrap-table-all.min.css';
 
-const loveMap = {
-    Gob: 'Martha',
-    Buster: 'Lucile 2',
+function onInsertRow(row) {
+    let newRowStr = ''
+
+    for (const prop in row) {
+        newRowStr += prop + ': ' + row[prop] + ' \n'
+    }
+    alert('You inserted:\n ' + newRowStr)
 }
 
-
-function isExpandableRow(row) {
-    return row['name'] in loveMap;
+function onDeleteRow(rowKeys) {
+    alert('You deleted: ' + rowKeys)
 }
 
-function expandRow(row) {
-    return (
-        <p>{row['name']} loves {loveMap[row['name']]}.</p>
-    );
-}
 function onSelectRow(row, isSelected, e) {
     if (isSelected) {
-        alert(`You just selected '${row['name']}'`)
     }
 }
-
-const selectRowProp = {
-    mode: 'checkbox',
-    clickToSelect: true,
-    onSelect: onSelectRow,
-    bgColor: 'gold'
-};
 
 class Dashboard extends Component {
     constructor(props) {
@@ -54,42 +45,52 @@ class Dashboard extends Component {
 
     render() {
         const options = {
-            expandRowBgColor: 'pink',
-            expanding: [1] // initially expanded
-        }
+            afterInsertRow: onInsertRow,
+            afterDeleteRow: onDeleteRow
+        };
+
+        // To delete rows you be able to select rows
+        const selectRowProp = {
+            mode: 'checkbox',
+            clickToSelect: true,
+            onSelect: onSelectRow,
+            bgColor: 'gold'
+        };
+
         return (
-            <div>
-                <BootstrapTable data={this.state.data} keyField='true'
-                                expandableRow={isExpandableRow}
-                                expandComponent={expandRow}
-                                expandColumnOptions={
-                                    {expandColumnVisible: true}}
-                                options={options}>
-                    <TableHeaderColumn>
-                        <p>User name</p>
-                        {this.state.data.map(data => <li>{data.first_name}</li>)}
-                    </TableHeaderColumn>
-                    <TableHeaderColumn>
-                        <p>User login</p>
-                        {this.state.data.map(data => <li>{data.last_name}</li>)}
-                    </TableHeaderColumn>
-                    <TableHeaderColumn>
-                        <p>Email</p>
-                        {this.state.data.map(data => <li>{data.email}</li>)}
-                    </TableHeaderColumn>
-                    <TableHeaderColumn>
-                        <p>User password</p>
-                        {this.state.data.map(data => <li>{data.password}</li>)}
-                    </TableHeaderColumn>
-                    <TableHeaderColumn>
-                        <p>Data created</p>
-                        {this.state.data.map(data => <li>{data.created}</li>)}
-                    </TableHeaderColumn>
-                    <TableHeaderColumn>
-                        <p>Data modified</p>
-                        {this.state.data.map(data => <li>{data.modified}</li>)}
-                    </TableHeaderColumn>
-                </BootstrapTable>
+            <div className="container ca-container">
+                <div className="row">
+                    <div className="col-md-12">
+                        <h2>Users Table</h2>
+                    </div>
+                </div>
+                <div className="row" style={table}>
+                    <BootstrapTable data={this.state.data}
+                                    insertRow={true}
+                                    deleteRow={true}
+                                    selectRow={selectRowProp}
+                                    options={options}
+                    >
+                        <TableHeaderColumn isKey dataField='first_name'>
+                            <p>User name</p>
+                        </TableHeaderColumn>
+                        <TableHeaderColumn dataField='last_name'>
+                            <p>User login</p>
+                        </TableHeaderColumn>
+                        <TableHeaderColumn dataField='email'>
+                            <p>Email</p>
+                        </TableHeaderColumn>
+                        <TableHeaderColumn dataField='password'>
+                            <p>User password</p>
+                        </TableHeaderColumn>
+                        <TableHeaderColumn dataField='created'>
+                            <p>Data created</p>
+                        </TableHeaderColumn>
+                        <TableHeaderColumn dataField='modified'>
+                            <p>Data modified</p>
+                        </TableHeaderColumn>
+                    </BootstrapTable>
+                </div>
             </div>
         )
     }
@@ -98,7 +99,11 @@ class Dashboard extends Component {
 const table = {
     margin: "center",
     borderLeft: "2px solid lightgray",
-    borderRight: "2px solid lightgray"
+    borderRight: "2px solid lightgray",
+    borderTop: "2px solid lightgray",
+    borderDown: "2px solid lightgray",
+    borderColor: "#cacd58",
+    // borderWidth: "5px",
 }
 // const colA = {
 //     borderLeft: "2px solid lightgray",
